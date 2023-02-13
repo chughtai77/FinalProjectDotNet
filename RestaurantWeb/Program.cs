@@ -1,5 +1,9 @@
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
-using RestaurantWeb.Data;
+using NuGet.Packaging.Rules;
+using Restaurant.DataAccess;
+using Restaurant.DataAccess.Repository;
+using Restaurant.DataAccess.Repository.IRepository;
 
 namespace RestaurantWeb
 {
@@ -14,9 +18,16 @@ namespace RestaurantWeb
 			//---connection string with db context class in container
 			builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
 				builder.Configuration.GetConnectionString("DefaultConnection")
-
 				));
-	
+
+			//We will use repository here 
+			//--------------New Dependency Injection----------- 
+			//And We USe Scope ("lifetime" service/patteren) 
+			//builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+			//Change to Unit Of Work For Dont Repeat 
+			//builder.Services.AddScoped<IUn, UnitOfWork>();
+			builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+
 			//---builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 			var app = builder.Build();
@@ -38,7 +49,7 @@ namespace RestaurantWeb
 
 			app.MapControllerRoute(
 				name: "default",
-				pattern: "{controller=Home}/{action=Index}/{id?}");
+				pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 			app.Run();
 		}
