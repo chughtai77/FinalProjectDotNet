@@ -14,18 +14,18 @@ namespace Restaurant.Models
         [Required]
         public string Title { get; set; }
         
-        [Display(Name = "List Price Remove For now")]
+        [Display(Name = "List Price")]
         public double ListPrice { get; set; }
         [Required]
         [Range(1, 10000)]
         [Display(Name = "Unit Price")]
         public double Price { get; set; }
-        [Required]
-        [Range(1, 10000)]
+        //[Required]
+        //[Range(1, 10000)]
         [Display(Name = "Price for More then 5")]
         public double Price50 { get; set; }
-        [Required]
-        [Range(1, 10000)]
+        //[Required]
+        //[Range(1, 10000)]
         [Display(Name = "Price for More then 10")]
         public double Price100 { get; set; }
         [ValidateNever]

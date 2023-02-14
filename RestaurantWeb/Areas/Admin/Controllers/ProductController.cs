@@ -103,7 +103,7 @@ namespace RestaurantWeb.Areas.Admin.Controllers
                     _unitWork.Product.Update(obj.product);
                 }
                 _unitWork.Save();
-                TempData["sucess"] = "Product Added Sucessfully";
+                TempData["sucess"] = "FoodItem Added Sucessfully";
                 return RedirectToAction("Index");
             }
             return View(obj);

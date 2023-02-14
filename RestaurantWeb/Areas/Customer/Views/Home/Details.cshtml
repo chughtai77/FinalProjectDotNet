@@ -1,6 +1,7 @@
 ﻿@model ShoppingCart
 
-<form method="post">
+<form method="POST">
+    <input hidden asp-for="ProductId" />
         <div class="card container pt-4">
             <div class="card-header bg-primary text-light ml-0  row ">
                 <div class="col-12 col-md-6">
@@ -19,14 +20,15 @@
                             <h5 class="text-muted pb-2">Category: @Model.Product.Category.Name</h5>
                             </div>
                             <div class="row pl-2">
-                                <h5 class="text-muted pb-2">List Price: <strike>@Model.Product.ListPrice.ToString("Rs/- 0.00")</strike></h5>
+                            <h5 class="text-muted pb-2">Unit Price: @Model.Product.Price.ToString("Rs/- 0.00")</h5>
+                            @*<h5 class="text-muted pb-2">List Price: <strike>@Model.Product.ListPrice.ToString("Rs/- 0.00")</strike></h5>*@
                             </div>
                             <div class="row text-center pl-2">
                                 <div class="p-1 col-2 bg-secondary border-bottom">
                                     <div>Quantity</div>
                                 </div>
                                 <div class="p-1 col-2 bg-secondary border-bottom">
-                                    <div>1-5</div>
+                                    <div>Unit Item</div>
                                 </div>
                                 <div class="p-1 col-2 bg-secondary border-bottom">
                                     <div>5-10</div>

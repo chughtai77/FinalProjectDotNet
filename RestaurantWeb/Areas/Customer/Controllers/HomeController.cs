@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Restaurant.DataAccess.Repository.IRepository;
 using Restaurant.Models;
 //using RestaurantWeb.Models;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace RestaurantWeb.Areas.Customer.Controllers
 {
@@ -25,15 +27,48 @@ namespace RestaurantWeb.Areas.Customer.Controllers
             return View(productList);
         }
 
-        public IActionResult Details(int id)
+        //HTTP GET
+        public IActionResult Details(int ProductId)
         {
             ShoppingCart cartobj = new()
             {
                 Count = 1,
-                Product = _unitOfWork.Product.GetFirstOrDefault(u=>u.Id==id, includeProperties: "Category"),
-        };
+                ProductId = ProductId,
+                Product = _unitOfWork.Product.GetFirstOrDefault(u=>u.Id== ProductId, includeProperties: "Category"),
+            };
             return View(cartobj);
         }
+
+        //HTTP POST----------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public IActionResult Details(ShoppingCart shoppingCart)
+        {
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            shoppingCart.ApplicationUserId = claim.Value;
+
+            ShoppingCart cartFromDb = _unitOfWork.ShoppingCart.GetFirstOrDefault(
+                u => u.ApplicationUserId == claim.Value && u.ProductId == shoppingCart.ProductId);
+
+            if(cartFromDb == null ) 
+            {
+                _unitOfWork.ShoppingCart.Add(shoppingCart);
+
+            }
+            else
+            {
+                _unitOfWork.ShoppingCart.IncrementCount(cartFromDb, shoppingCart.Count);
+
+            }
+
+            _unitOfWork.Save();
+
+            return RedirectToAction(nameof(Index));
+        }
+
 
 
         public IActionResult Privacy()

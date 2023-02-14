@@ -13,7 +13,7 @@ namespace Restaurant.DataAccess.Repository.IRepository
         //T is genereic and it is generic repository 
 
         T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null);
-        IEnumerable<T> GetAll(string? includeProperties = null);
+        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter=null, string? includeProperties = null);
 
         void Add(T item);
         void Remove(T item);
