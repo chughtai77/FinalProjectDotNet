@@ -17,7 +17,11 @@ namespace Restaurant.DataAccess.Repository.IRepository
         IShoppingCartRepository ShoppingCart { get; }
         IApplicationUserRepository ApplicationUser { get; }
 
-        void Save();
+		IOrderDetailRepository OrderDetail{ get; }
+		IOrderHeaderRepository OrderHeader { get; }
+
+
+		void Save();
     }
 }
  
